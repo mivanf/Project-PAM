@@ -1,0 +1,253 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Daftar"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="48sp"
+                android:fontFamily="@font/jersey10_font"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Buat akun baru Kamu!"
+                android:textColor="#AEAEAE"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:fontFamily="@font/metropolis_font"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Nama:"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <EditText
+                android:id="@+id/etNama"
+                android:layout_width="332dp"
+                android:layout_height="44dp"
+                android:layout_marginBottom="40dp"
+                android:paddingLeft="12dp"
+                android:background="@drawable/bg_input"
+                android:elevation="4dp"
+                android:hint="Nama"
+                android:textColorHint="#c86c9c"
+                android:inputType="textPersonName"
+                android:textColor="#c86c9c"
+                android:textSize="16sp"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <TextView
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="4dp"
+                android:text="Email:"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="332dp"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="40dp"
+                android:paddingLeft="12dp"
+                android:background="@drawable/bg_input"
+                android:elevation="4dp"
+                android:hint="Email Address"
+                android:textColorHint="#c86c9c"
+                android:inputType="textEmailAddress"
+                android:textColor="#c86c9c"
+                android:textSize="16sp"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="332dp"
+                    android:layout_height="wrap_content"
+                    android:text="Kata Sandi:"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/metropolis_font"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="332dp"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="12dp"
+                    android:layout_marginBottom="8dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etKataSandi"
+                            android:layout_width="332dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_input"
+                            android:hint="Kata Sandi"
+                            android:textColorHint="#c86c9c"
+                            android:textColor="#c86c9c"
+                            android:textSize="16sp"
+                            android:gravity="center_vertical"
+                            android:inputType="textPassword"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="48dp"
+                            android:fontFamily="@font/metropolis_font"/>
+
+                        <ImageView
+                            android:id="@+id/ivToggleKataSandi"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_visibility_off"
+                            android:contentDescription="Toggle Password"/>
+                    </FrameLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="332dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Konfirmasi Kata Sandi:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/metropolis_font"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="332dp"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="12dp"
+                    android:layout_marginBottom="8dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etKonfirmasiKataSandi"
+                            android:layout_width="332dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_input"
+                            android:hint="Konfirmasi Kata Sandi"
+                            android:textColorHint="#c86c9c"
+                            android:textColor="#c86c9c"
+                            android:textSize="16sp"
+                            android:gravity="center_vertical"
+                            android:inputType="textPassword"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="48dp"
+                            android:fontFamily="@font/metropolis_font"/>
+
+                        <ImageView
+                            android:id="@+id/ivToggleKonfirmasiKataSandi"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_visibility_off"
+                            android:contentDescription="Toggle Password"/>
+                    </FrameLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="332dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_rounded"
+            android:text="Daftar"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:fontFamily="@font/metropolis_font"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Sudah memiliki akun?"
+                android:textSize="14sp"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <TextView
+                android:id="@+id/loginNow"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:text="Masuk"
+                android:textColor="#DA498D"
+                android:textSize="14sp"
+                android:fontFamily="@font/metropolis_font"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

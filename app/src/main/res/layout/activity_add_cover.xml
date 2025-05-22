@@ -1,0 +1,140 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <!-- AppBar / Header -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:background="@drawable/appbar_notes_bg">
+
+            <!-- Tombol Kembali -->
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginBottom="22dp"
+                android:layout_toStartOf="@+id/tv_addnotes"
+                android:contentDescription="Kembali"
+                android:src="@drawable/ic_back"/>
+
+            <!-- Judul Header -->
+            <TextView
+                android:id="@+id/tv_addnotes"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Notes Baru"
+                android:fontFamily="@font/jersey10_font"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:textAlignment="center"/>
+        </RelativeLayout>
+
+        <!-- Label Input Judul -->
+        <TextView
+            android:layout_width="332dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Judul:"
+            android:textSize="12sp"
+            android:textColor="#878787"
+            android:fontFamily="@font/metropolis_font"/>
+
+        <!-- Judul dari Halaman Sebelumnya -->
+        <EditText
+            android:id="@+id/et_judul_note"
+            android:layout_width="332dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="18dp"
+            android:hint="Judul Note"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#878787"
+            android:fontFamily="@font/poppins_font"
+            android:background="@drawable/input_border_blue"/>
+
+        <!-- Label Cover -->
+        <TextView
+            android:layout_width="332dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Cover:"
+            android:textSize="12sp"
+            android:textColor="#878787"
+            android:fontFamily="@font/metropolis_font"/>
+
+        <!-- Input Cover -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_pilih_gambar"
+            android:layout_width="332dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="8dp">
+
+            <!-- LinearLayout untuk menata ImageView dan TextView -->
+            <LinearLayout
+                android:layout_width="332dp"
+                android:layout_height="375dp"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center"
+                android:background="@drawable/input_border_blue">
+
+                <!-- Gambar Cover -->
+                <ImageView
+                    android:id="@+id/iv_cover"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="Pilih Cover"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_photo"/>
+
+                <!-- Keterangan Tambahkan Gambar -->
+                <TextView
+                    android:id="@+id/tv_tambah_gambar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Tambahkan Gambar\nPilih gambar untuk jadi covermu!\n(optional)"
+                    android:textColor="#888888"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/metropolis_font"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Tombol Simpan -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_simpan"
+            android:layout_width="332dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/button_rounded_blue"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:text="Simpan"
+            android:textAllCaps="false"
+            android:fontFamily="@font/metropolis_font"/>
+    </LinearLayout>
+</ScrollView>

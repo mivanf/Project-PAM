@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="pink">#D385AB</color>
+    <color name="main">#DA498D</color>
+    <color name="notes_bar">#1D6BA3</color>
+    <color name="bg_card_blue">#D8E7FF</color>
+    <color name="red_notes_bar">#720E3D</color>
+    <color name="bg_card_pink">#FBF1F3</color>
+    <color name="bg_card_purple">#FAEAFF</color>
+    <color name="bg_card_orange">#FFF5D7</color>
+    <color name="date_pink">#C84589</color>
+    <color name="date_blue">#4591C8</color>
+    <color name="date_purple">#69247C</color>
+    <color name="date_orange">#D48B20</color>
+
+    <color name="header_blue">#1D6BA3</color>
+    <color name="card_blue">#4591C8</color>
+    <color name="card_blue_light">#D8E7FF</color>
+    <color name="button_blue">#64BCFC</color>
+    <color name="header_purple">#590E72</color>
+    <color name="card_purple">#832A9C</color>
+    <color name="card_purple_light">#F7DAFF</color>
+    <color name="button_purple">#D164FC</color>
+    <color name="header_pink">#720E3D</color>
+    <color name="card_pink">#C84589</color>
+    <color name="card_pink_light">#FFDCE3</color>
+    <color name="button_pink">#DA498D</color>
+    <color name="header_yellow">#D48B20</color>
+    <color name="card_yellow">#F9AF43</color>
+    <color name="card_yellow_light">#FFF5D7</color>
+    <color name="button_yellow">#FCC164</color>
+
+    <!-- Warna background pilihan -->
+    <color name="note_orange">#FFB74D</color>
+    <color name="note_pink">#F48FB1</color>
+    <color name="note_purple">#CE93D8</color>
+    <color name="note_blue">#64B5F6</color>
+
+    <!-- Tambahan jika dibutuhkan -->
+    <color name="gray_text">#666666</color>
+    <color name="light_gray">#EEEEEE</color>
+
+    <!-- Warna Background -->
+    <color name="warna_oranye">#FFF5D7</color>
+    <color name="warna_pink">#FFDCE3</color>
+    <color name="warna_ungu">#F7DAFF</color>
+    <color name="warna_biru">#D8E7FF</color>
+
+</resources>
