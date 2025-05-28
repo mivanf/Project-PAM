@@ -9,24 +9,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-//import android.net.Uri;
-//import android.os.Bundle;
-//
-//import com.bumptech.glide.Glide;
-//import com.cloudinary.Transformation;
-//import com.cloudinary.android.MediaManager;
-//import com.cloudinary.android.callback.ErrorInfo;
-//import com.cloudinary.android.callback.UploadCallback;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.util.Log;
-//
-//import com.cloudinary.cloudinaryquickstart.databinding.ActivityMainBinding;
-//
-//import java.util.HashMap;
-//import java.util.Map;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
