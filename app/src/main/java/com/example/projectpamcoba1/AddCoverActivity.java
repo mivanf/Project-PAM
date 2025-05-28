@@ -3,28 +3,26 @@ package com.example.projectpamcoba1;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import com.bumptech.glide.Glide;
-import com.cloudinary.android.MediaManager;
-import com.cloudinary.android.callback.ErrorInfo;
-import com.cloudinary.android.callback.UploadCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 
 public class AddCoverActivity extends AppCompatActivity {
 
@@ -83,11 +81,11 @@ public class AddCoverActivity extends AppCompatActivity {
         if (!isCloudinaryInitialized) {
             try {
                 Map<String, String> config = new HashMap<>();
-                config.put("cloud_name", "dk7ayxsny"); // Ganti sesuai akunmu
+                config.put("cloud_name", "dk7ayxsny"); // Menggunakan cloud dk7ayxsny
                 MediaManager.init(this, config);
                 isCloudinaryInitialized = true;
             } catch (IllegalStateException e) {
-                // Sudah diinisialisasi
+                Log.e("Cloudinary", "MediaManager already initialized");
             }
         }
     }
@@ -108,12 +106,13 @@ public class AddCoverActivity extends AppCompatActivity {
         }
     }
 
+    // Upload gambar ke Cloudinary
     private void uploadImageToCloudinary(Uri imageUri) {
         Toast.makeText(this, "Mengunggah gambar...", Toast.LENGTH_SHORT).show();
 
         MediaManager.get().upload(imageUri)
-                .unsigned("pam-project") // Ganti dengan upload preset kamu
-                .option("public_id", "project-pam/cover_" + System.currentTimeMillis()) // Simpan ke folder
+                .unsigned("pam-project") // Menggunakan preset pam-project
+                .option("public_id", "project-pam/cover_" + System.currentTimeMillis()) // Menyimpan ke folder project-pam
                 .callback(new UploadCallback() {
                     @Override
                     public void onStart(String requestId) {}
@@ -139,6 +138,7 @@ public class AddCoverActivity extends AppCompatActivity {
                 .dispatch();
     }
 
+    // Simpan note ke Firestore
     private void saveNoteToFirestore() {
         String currentDate = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
         Note note = new Note(title, content, selectedColor, imageUrl, currentDate);

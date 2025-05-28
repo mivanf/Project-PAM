@@ -57,7 +57,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 break;
         }
 
-        // Tampilkan gambar cover menggunakan Glide dari URL Cloudinary
+        // Menampilkan gambar cover menggunakan Glide dari URL Cloudinary
         String imageUrl = note.getImagePath(); // imagePath berisi URL Cloudinary
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(context)

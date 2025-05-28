@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -16,24 +17,21 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DetailNoteActivity extends AppCompatActivity {
     private TextView tvTitle, tvDate, tvWordCountValue;
@@ -158,6 +156,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         Button btnDownload = findViewById(R.id.btn_download);
         btnDownload.setOnClickListener(v -> downloadCoverImage());
     }
+
     // Inisialisasi Cloudinary
     private void initCloudinary() {
         if (!isCloudinaryInitialized) {
@@ -167,17 +166,13 @@ public class DetailNoteActivity extends AppCompatActivity {
                 MediaManager.init(this, config);
                 isCloudinaryInitialized = true;
             } catch (IllegalStateException e) {
-                // Sudah diinisialisasi
+                Log.e("Cloudinary", "MediaManager already initialized");
             }
         }
     }
 
     // Upload gambar ke Cloudinary dan update Firestore
     private void uploadImageToCloudinaryAndSaveNote(String selectedColor) {
-        if (selectedImageUri == null) {
-            Toast.makeText(this, "Gambar belum dipilih", Toast.LENGTH_SHORT).show();
-            return;
-        }
         Toast.makeText(this, "Mengunggah gambar...", Toast.LENGTH_SHORT).show();
 
         try {
@@ -189,9 +184,7 @@ public class DetailNoteActivity extends AppCompatActivity {
                         public void onStart(String requestId) {}
 
                         @Override
-                        public void onProgress(String requestId, long bytes, long totalBytes) {
-                            // Bisa tambahkan progress bar jika perlu
-                        }
+                        public void onProgress(String requestId, long bytes, long totalBytes) {}
 
                         @Override
                         public void onSuccess(String requestId, Map resultData) {
@@ -205,9 +198,7 @@ public class DetailNoteActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onReschedule(String requestId, ErrorInfo error) {
-                            // Handle reschedule jika perlu
-                        }
+                        public void onReschedule(String requestId, ErrorInfo error) {}
                     }).dispatch();
 
         } catch (Exception e) {
@@ -238,6 +229,7 @@ public class DetailNoteActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(this, "Gagal menyimpan catatan", Toast.LENGTH_SHORT).show());
     }
 
+    // Menghapus note pada Firestore
     private void deleteNote() {
         db.collection("users")
                 .document(userId)
@@ -254,6 +246,7 @@ public class DetailNoteActivity extends AppCompatActivity {
                 });
     }
 
+    // Mengambil warna yang dipilih dari radio button
     private String getSelectedColor() {
         int selectedId = radioGroupColors.getCheckedRadioButtonId();
         if (selectedId == rbOrange.getId()) return "oranye";
@@ -262,6 +255,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         return "biru"; // default
     }
 
+    // Mengupdate cover dan warna
     private void updateCoverAndColor(String color, String coverUrl) {
         int colorRes = R.color.bg_card_blue;
         int defaultCoverRes = R.drawable.ic_default_blue;
@@ -301,6 +295,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         }
     }
 
+    // Menampilkan popup konfirmasi
     private void showConfirmDialog(String title, String message, String confirmButtonText, Runnable onConfirm) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null);
@@ -327,21 +322,24 @@ public class DetailNoteActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    // Membuka galeri
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    // Mengambil gambar dari galeri
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             selectedImageUri = data.getData();
-            ivCover.setImageURI(selectedImageUri); // Tampilkan gambar sementara
+            ivCover.setImageURI(selectedImageUri); // Menampilkan gambar sementara
         }
     }
 
+    // Mendownload cover gambar ke penyimpanan
     private void downloadCoverImage() {
         ivCover.setDrawingCacheEnabled(true);
         ivCover.buildDrawingCache();
