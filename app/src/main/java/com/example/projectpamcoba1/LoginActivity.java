@@ -22,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etKataSandi;
     private Button btnLogin;
     private FirebaseAuth mAuth;
+    private ImageView ivTogglePassword;
     TextView textView;
 
     @Override
@@ -29,13 +30,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
         etEmail = findViewById(R.id.etEmail);
         etKataSandi = findViewById(R.id.etKataSandi);
         btnLogin = findViewById(R.id.btnLogin);
-        mAuth = FirebaseAuth.getInstance();
         textView = findViewById(R.id.registerNow);
-        EditText etKataSandi = findViewById(R.id.etKataSandi);
-        ImageView ivTogglePassword = findViewById(R.id.ivTogglePassword);
+        etKataSandi = findViewById(R.id.etKataSandi);
+        ivTogglePassword = findViewById(R.id.ivTogglePassword);
 
         textView.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);

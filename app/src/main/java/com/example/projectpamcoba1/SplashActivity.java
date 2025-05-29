@@ -22,18 +22,18 @@ public class SplashActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            // Jika sudah login, masuk ke MainActivity
+            // Jika sudah login, arahkan ke MainActivity
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
-            finish(); // <<< Tambahkan ini agar SplashActivity tidak muncul kembali saat back
-            return; // agar kode di bawahnya tidak tetap dijalankan
+            finish();
+            return; // Selesai
         }
 
         btnMulai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (user == null) {
-                    // Jika belum login, masuk ke LoginActivity
+                    // Jika belum login, arahkan ke LoginActivity
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 }
             }

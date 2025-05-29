@@ -55,7 +55,6 @@ public class DetailNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_note);
 
-        // Inisialisasi Firebase dan View
         db = FirebaseFirestore.getInstance();
 
         tvTitle = findViewById(R.id.tv_detail);
@@ -162,7 +161,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         if (!isCloudinaryInitialized) {
             try {
                 Map<String, String> config = new HashMap<>();
-                config.put("cloud_name", "dk7ayxsny"); // Ganti sesuai akunmu
+                config.put("cloud_name", "dk7ayxsny"); // Menggunakan cloud dk7ayxsny
                 MediaManager.init(this, config);
                 isCloudinaryInitialized = true;
             } catch (IllegalStateException e) {
@@ -177,8 +176,8 @@ public class DetailNoteActivity extends AppCompatActivity {
 
         try {
             MediaManager.get().upload(selectedImageUri)
-                    .unsigned("pam-project") // Ganti dengan upload preset kamu
-                    .option("public_id", "project-pam/cover_" + System.currentTimeMillis()) // Simpan ke folder
+                    .unsigned("pam-project") // Menggunakan preset pam-project
+                    .option("public_id", "project-pam/cover_" + System.currentTimeMillis()) // Menyimpan ke folder project-pam
                     .callback(new UploadCallback() {
                         @Override
                         public void onStart(String requestId) {}
@@ -252,7 +251,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         if (selectedId == rbOrange.getId()) return "oranye";
         if (selectedId == rbPink.getId()) return "pink";
         if (selectedId == rbPurple.getId()) return "ungu";
-        return "biru"; // default
+        return "biru"; // Warna default
     }
 
     // Mengupdate cover dan warna
@@ -262,7 +261,6 @@ public class DetailNoteActivity extends AppCompatActivity {
 
         switch (color.toLowerCase()) {
             case "oranye":
-            case "orange":
                 colorRes = R.color.bg_card_orange;
                 defaultCoverRes = R.drawable.ic_default_orange;
                 rbOrange.setChecked(true);
@@ -273,7 +271,6 @@ public class DetailNoteActivity extends AppCompatActivity {
                 rbPink.setChecked(true);
                 break;
             case "ungu":
-            case "purple":
                 colorRes = R.color.bg_card_purple;
                 defaultCoverRes = R.drawable.ic_default_purple;
                 rbPurple.setChecked(true);

@@ -32,6 +32,7 @@ public class HomeFragment extends Fragment {
         if (user != null) {
             tv_name_notes.setText("Hola! " + user.getDisplayName());
         }
+
         // Inisialisasi card
         card1 = view.findViewById(R.id.card_1);
 
@@ -40,7 +41,6 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), NotesActivity.class);
             startActivity(intent);
         });
-
 
         return view;
     }

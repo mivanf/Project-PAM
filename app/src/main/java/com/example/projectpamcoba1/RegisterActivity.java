@@ -24,10 +24,11 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etNama, etEmail, etKataSandi, etKonfirmasiKataSandi;
+    private TextView login;
+    private ImageView ivToggleKataSandi, ivToggleKonfirmasiKataSandi;
     private Button btnRegister;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,9 @@ public class RegisterActivity extends AppCompatActivity {
         etKataSandi = findViewById(R.id.etKataSandi);
         etKonfirmasiKataSandi = findViewById(R.id.etKonfirmasiKataSandi);
         btnRegister = findViewById(R.id.btnRegister);
-        textView = findViewById(R.id.loginNow);
-        ImageView ivToggleKataSandi = findViewById(R.id.ivToggleKataSandi);
-        ImageView ivToggleKonfirmasiKataSandi = findViewById(R.id.ivToggleKonfirmasiKataSandi);
+        login = findViewById(R.id.login);
+        ivToggleKataSandi = findViewById(R.id.ivToggleKataSandi);
+        ivToggleKonfirmasiKataSandi = findViewById(R.id.ivToggleKonfirmasiKataSandi);
 
         ivToggleKataSandi.setOnClickListener(v -> {
             if (etKataSandi.getTransformationMethod() instanceof PasswordTransformationMethod) {
@@ -72,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
             etKonfirmasiKataSandi.setSelection(etKonfirmasiKataSandi.length()); // Memastikan kursor tetap di akhir teks
         });
 
-        textView.setOnClickListener(view -> {
+        login.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left); // Animasi perpindahan

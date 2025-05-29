@@ -39,15 +39,14 @@ public class AddCoverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cover);
 
-        // Inisialisasi view
+        db = FirebaseFirestore.getInstance();
         ivBack = findViewById(R.id.iv_back);
         imagePreview = findViewById(R.id.iv_cover);
         tvJudul = findViewById(R.id.et_judul_note);
-        db = FirebaseFirestore.getInstance();
 
         initCloudinary();
 
-        // Ambil data dari intent sebelumnya
+        // Menerima data dari intent sebelumnya
         selectedColor = getIntent().getStringExtra("color");
         title = getIntent().getStringExtra("title");
         content = getIntent().getStringExtra("content");
@@ -90,19 +89,21 @@ public class AddCoverActivity extends AppCompatActivity {
         }
     }
 
+    // Membuka galeri
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Pilih Gambar"), PICK_IMAGE_REQUEST);
     }
 
+    // Mengambil gambar dari galeri
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             selectedImageUri = data.getData();
-            Glide.with(this).load(selectedImageUri).into(imagePreview);
+            imagePreview.setImageURI(selectedImageUri); // Menampilkan gambar sementara
         }
     }
 
