@@ -123,7 +123,7 @@ public class AddCoverActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
-                        imageUrl = (String) resultData.get("secure_url");
+                        imageUrl = (String) resultData.get("secure_url"); // Menyimpan url gambar yang diunggah
                         Toast.makeText(AddCoverActivity.this, "Gambar berhasil diunggah", Toast.LENGTH_SHORT).show();
                         saveNoteToFirestore();
                     }
