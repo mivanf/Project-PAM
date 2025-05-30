@@ -57,10 +57,13 @@ public class AddCoverActivity extends AppCompatActivity {
 
         // Tombol simpan
         findViewById(R.id.btn_simpan).setOnClickListener(v -> {
+            // Jika gambar sudah diupload ke Cloudinary dan url tersedia
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 saveNoteToFirestore();
+            // Jika gambar belum diupload ke Cloudinary
             } else if (selectedImageUri != null) {
                 uploadImageToCloudinary(selectedImageUri);
+            // Tidak ada gambar yang dipilih
             } else {
                 imageUrl = "default_" + selectedColor;
                 saveNoteToFirestore();
@@ -102,7 +105,7 @@ public class AddCoverActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
+            selectedImageUri = data.getData(); // Menyimpan URI gambar yang dipilih
             imagePreview.setImageURI(selectedImageUri); // Menampilkan gambar sementara
         }
     }
