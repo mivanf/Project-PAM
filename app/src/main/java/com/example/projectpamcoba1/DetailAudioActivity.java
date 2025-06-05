@@ -30,7 +30,7 @@ public class DetailAudioActivity extends AppCompatActivity {
     private RadioGroup radioGroupColors;
     private Button editButton;
     private Button downloadButton;
-
+    private Button deleteButton;
     private Uri audioUri = null;
     private FirebaseFirestore db;
     private String userId;
@@ -42,9 +42,8 @@ public class DetailAudioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_audio);
 
-        // Inisialisasi Cloudinary dengan unsigned preset
+        // Inisialisasi elemen UI dan Firebase
         CloudinaryManager.init(this);
-
         backButton = findViewById(R.id.iv_back);
         audioPicker = findViewById(R.id.btn_pilih_audio);
         nameFileTextView = findViewById(R.id.tv_tambah_audio);
@@ -52,11 +51,12 @@ public class DetailAudioActivity extends AppCompatActivity {
         radioGroupColors = findViewById(R.id.radioGroupColors);
         editButton = findViewById(R.id.btn_edit);
         downloadButton = findViewById(R.id.btn_download_audio);
+        deleteButton = findViewById(R.id.btn_hapus);
 
         db = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Ambil data dari intent
+        // Ambil data note dari intent
         Intent intent = getIntent();
         noteId = intent.getStringExtra("noteId");
         editTextTitle.setText(intent.getStringExtra("title"));
@@ -64,22 +64,26 @@ public class DetailAudioActivity extends AppCompatActivity {
         nameFileTextView.setText(getFileNameFromUri(Uri.parse(existingAudioUrl)));
         setSelectedColor(intent.getStringExtra("color"));
 
+        // Kembali ke halaman sebelumnya
         backButton.setOnClickListener(v -> onBackPressed());
 
+        // Memilih file audio dari penyimpanan
         audioPicker.setOnClickListener(v -> {
             Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
             pickIntent.setType("audio/*");
             startActivityForResult(pickIntent, PICK_AUDIO_REQUEST);
         });
 
+        // Edit dan simpan data note ke Firestore
         editButton.setOnClickListener(v -> {
             if (audioUri != null) {
-                uploadAudioToCloudinary(audioUri);
+                uploadAudioToCloudinary(audioUri); // Upload baru jika ada file baru
             } else {
-                saveDataToFirestore(existingAudioUrl); // gunakan audio lama jika tidak ganti
+                saveDataToFirestore(existingAudioUrl); // Gunakan file lama
             }
         });
 
+        // Download audio melalui browser
         downloadButton.setOnClickListener(v -> {
             if (existingAudioUrl != null) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(existingAudioUrl));
@@ -88,8 +92,19 @@ public class DetailAudioActivity extends AppCompatActivity {
                 Toast.makeText(this, "Tidak ada audio untuk diunduh", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Hapus catatan dengan konfirmasi
+        deleteButton.setOnClickListener(v -> {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Konfirmasi Hapus")
+                    .setMessage("Apakah Anda yakin ingin menghapus audio ini?")
+                    .setPositiveButton("Ya", (dialog, which) -> deleteNote())
+                    .setNegativeButton("Batal", null)
+                    .show();
+        });
     }
 
+    // Method untuk menangani hasil dari pemilihan file audio
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -99,16 +114,18 @@ public class DetailAudioActivity extends AppCompatActivity {
         }
     }
 
+    // Mengunggah file audio ke Cloudinary
     private void uploadAudioToCloudinary(Uri audioUri) {
         Toast.makeText(this, "Uploading audio...", Toast.LENGTH_SHORT).show();
 
         MediaManager.get().upload(audioUri)
-                .option("resource_type", "video") // audio dianggap sebagai video di Cloudinary
-                .unsigned("YOUR_UNSIGNED_UPLOAD_PRESET") // ganti dengan preset unsigned kamu
+                .option("resource_type", "video") // Diperlakukan sebagai video
+                .unsigned("pam-project") // Preset unsigned Cloudinary
                 .callback(new UploadCallback() {
                     @Override public void onStart(String requestId) {}
                     @Override public void onProgress(String requestId, long bytes, long totalBytes) {}
 
+                    // Jika berhasil, simpan URL audio ke Firestore
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
                         String audioUrl = (String) resultData.get("secure_url");
@@ -120,12 +137,12 @@ public class DetailAudioActivity extends AppCompatActivity {
                         Toast.makeText(DetailAudioActivity.this, "Upload gagal: " + error.getDescription(), Toast.LENGTH_LONG).show();
                     }
 
-                    @Override
-                    public void onReschedule(String requestId, ErrorInfo error) {}
+                    @Override public void onReschedule(String requestId, ErrorInfo error) {}
                 })
                 .dispatch();
     }
 
+    // Menyimpan data note (judul, warna, URL audio) ke Firestore
     private void saveDataToFirestore(String audioUrl) {
         String title = editTextTitle.getText().toString().trim();
         if (title.isEmpty()) {
@@ -160,6 +177,7 @@ public class DetailAudioActivity extends AppCompatActivity {
                 });
     }
 
+    // Mengatur radio button warna berdasarkan data dari Firestore
     private void setSelectedColor(String color) {
         for (int i = 0; i < radioGroupColors.getChildCount(); i++) {
             View view = radioGroupColors.getChildAt(i);
@@ -173,6 +191,7 @@ public class DetailAudioActivity extends AppCompatActivity {
         }
     }
 
+    // Mendapatkan nama file dari URI
     private String getFileNameFromUri(Uri uri) {
         String result = null;
         if (uri.getScheme() != null && uri.getScheme().equals("content")) {
@@ -189,5 +208,25 @@ public class DetailAudioActivity extends AppCompatActivity {
             result = uri.getLastPathSegment();
         }
         return result;
+    }
+
+    // Menghapus catatan dari Firestore berdasarkan noteId
+    private void deleteNote() {
+        if (noteId != null && !noteId.isEmpty()) {
+            db.collection("users")
+                    .document(userId)
+                    .collection("notes")
+                    .document(noteId)
+                    .delete()
+                    .addOnSuccessListener(unused -> {
+                        Toast.makeText(this, "Berhasil dihapus", Toast.LENGTH_SHORT).show();
+                        finish();  // Tutup activity setelah dihapus
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Gagal menghapus: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(this, "ID catatan tidak ditemukan", Toast.LENGTH_SHORT).show();
+        }
     }
 }
