@@ -12,13 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.projectpamcoba1.data.ToDoListActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
     private TextView tv_name_notes;
-    private CardView card1, card2;
+    private CardView card1, card2, card4;
 
     @Nullable
     @Override
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
         // Inisialisasi card
         card1 = view.findViewById(R.id.card_1);
         card2 = view.findViewById(R.id.card_2);
+        card4 = view.findViewById(R.id.card_4);
         // Set listener untuk pindah ke NotesActivity
         card1.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), NotesActivity.class);
@@ -43,6 +45,11 @@ public class HomeFragment extends Fragment {
 
         card2.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AudioActivity.class);
+            startActivity(intent);
+        });
+
+        card4.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ToDoListActivity.class);
             startActivity(intent);
         });
 

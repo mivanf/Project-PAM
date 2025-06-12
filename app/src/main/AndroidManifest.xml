@@ -55,6 +55,14 @@
         <activity
             android:name=".AddCoverActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".data.ToDoListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".data.AddEditActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
