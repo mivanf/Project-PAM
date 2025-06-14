@@ -62,8 +62,17 @@
         <activity
             android:name=".data.AddEditActivity"
             android:exported="false" />
+
         <activity
             android:name=".AddDocumentActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".DocumentListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".DocumentDetailActivity"
             android:exported="false" />
 
     </application>

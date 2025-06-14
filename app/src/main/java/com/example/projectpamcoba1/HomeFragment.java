@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
     private TextView tv_name_notes;
-    private CardView card1, card2, card4;
+    private CardView card1, card2, card3, card4;
 
     @Nullable
     @Override
@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
         // Inisialisasi card
         card1 = view.findViewById(R.id.card_1);
         card2 = view.findViewById(R.id.card_2);
+        card3 = view.findViewById(R.id.card_3);
         card4 = view.findViewById(R.id.card_4);
         // Set listener untuk pindah ke NotesActivity
         card1.setOnClickListener(v -> {
@@ -45,6 +46,11 @@ public class HomeFragment extends Fragment {
 
         card2.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AudioActivity.class);
+            startActivity(intent);
+        });
+
+        card3.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), DocumentListActivity.class);
             startActivity(intent);
         });
 
