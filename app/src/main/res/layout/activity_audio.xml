@@ -1,0 +1,102 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Layout utama -->
+    <LinearLayout
+        android:id="@+id/activity_audio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Header -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:background="@drawable/appbar_audio_bg">
+
+            <!-- Tombol Kembali -->
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginBottom="22dp"
+                android:layout_toStartOf="@+id/new_audio"
+                android:contentDescription="Kembali"
+                android:src="@drawable/ic_back"/>
+
+            <!-- Judul Header -->
+            <TextView
+                android:id="@+id/new_audio"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Halaman Audio"
+                android:fontFamily="@font/jersey10_font"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:gravity="center"/>
+        </RelativeLayout>
+
+        <!-- Label Search -->
+        <TextView
+            android:layout_width="332dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="2dp"
+            android:text="Kesulitan mencari audio?"
+            android:textColor="@color/black"/>
+
+        <!-- Search Field -->
+        <EditText
+            android:id="@+id/et_cari"
+            android:layout_width="332dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:elevation="4dp"
+            android:background="@drawable/input_border_purple"
+            android:drawableStart="@drawable/ic_search_purple"
+            android:hint="Cari audio kamu?"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="#8310AD"
+            android:textColorHint="#8310AD"
+            android:drawablePadding="8dp"
+            android:inputType="text"
+            android:fontFamily="@font/metropolis_font"
+            android:textSize="16sp"/>
+
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="40dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"/>
+    </LinearLayout>
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="30dp"
+        app:srcCompat="@drawable/ic_plus"
+        android:contentDescription="Tambah audio"
+        app:backgroundTint="#8310AD"
+        app:tint="@null"
+        app:maxImageSize="24dp"/>
+</FrameLayout>
