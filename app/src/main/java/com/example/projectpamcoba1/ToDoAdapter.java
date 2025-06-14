@@ -1,4 +1,4 @@
-package com.example.projectpamcoba1.data;
+package com.example.projectpamcoba1;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,9 +6,10 @@ import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.projectpamcoba1.AddEditActivity;
 import com.example.projectpamcoba1.data.model.ToDoItem;
 import java.util.List;
-import com.example.projectpamcoba1.R;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
     private List<ToDoItem> todoList;
@@ -17,6 +18,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     public ToDoAdapter(List<ToDoItem> todoList, Context context) {
         this.todoList = todoList;
         this.context = context;
+    }
+
+    // Tambahkan method ini agar data bisa diperbarui
+    public void setItems(List<ToDoItem> newList) {
+        this.todoList = newList;
+        notifyDataSetChanged();
     }
 
     public static class ToDoViewHolder extends RecyclerView.ViewHolder {
@@ -51,9 +58,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddEditActivity.class);
-//            intent.putExtra("position", position);
-            // Kirim data jika perlu, misal:
-            intent.putExtra("title", todoList.get(position).getTitle());
+            intent.putExtra("title", item.getTitle());
             context.startActivity(intent);
         });
     }

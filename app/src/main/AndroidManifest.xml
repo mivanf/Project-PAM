@@ -57,10 +57,11 @@
             android:exported="false" />
 
         <activity
-            android:name=".data.ToDoListActivity"
+            android:name=".ToDoListActivity"
             android:exported="false" />
+
         <activity
-            android:name=".data.AddEditActivity"
+            android:name=".AddEditActivity"
             android:exported="false" />
 
     </application>
