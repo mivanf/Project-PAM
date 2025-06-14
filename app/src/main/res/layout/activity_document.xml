@@ -17,7 +17,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="68dp"
-            android:background="@drawable/appbar_audio_bg">
+            android:background="@drawable/appbar_document_bg">
 
             <!-- Tombol Kembali -->
             <ImageView
@@ -64,13 +64,13 @@
             android:layout_height="40dp"
             android:layout_marginBottom="16dp"
             android:elevation="4dp"
-            android:background="@drawable/input_border_purple"
+            android:background="@drawable/input_border_pink"
             android:drawableStart="@drawable/ic_search_purple"
             android:hint="Cari dokumen kamu?"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textColor="#8310AD"
-            android:textColorHint="#8310AD"
+            android:textColor="#C84589"
+            android:textColorHint="#C84589"
             android:drawablePadding="8dp"
             android:inputType="text"
             android:fontFamily="@font/metropolis_font"
@@ -99,7 +99,7 @@
         android:layout_marginBottom="30dp"
         app:srcCompat="@drawable/ic_plus"
         android:contentDescription="Tambah dokumen"
-        app:backgroundTint="#8310AD"
+        app:backgroundTint="#C84589"
         app:tint="@null"
         app:maxImageSize="24dp" />
 </FrameLayout>
