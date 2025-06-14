@@ -4,21 +4,21 @@ import com.google.firebase.Timestamp;
 
 public class DocumentNote {
     private String title;
-    private String description;
     private String fileUrl;
     private Timestamp timestamp;
+    private String color;
 
     public DocumentNote() {}
 
-    public DocumentNote(String title, String description, String fileUrl, Timestamp timestamp) {
+    public DocumentNote(String title, String fileUrl, Timestamp timestamp, String color) {
         this.title = title;
-        this.description = description;
         this.fileUrl = fileUrl;
         this.timestamp = timestamp;
+        this.color = color;
     }
 
     public String getTitle() { return title; }
-    public String getDescription() { return description; }
     public String getFileUrl() { return fileUrl; }
     public Timestamp getTimestamp() { return timestamp; }
+    public String getColor() { return color; }
 }

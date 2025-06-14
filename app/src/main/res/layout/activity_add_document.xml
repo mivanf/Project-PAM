@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".AddDocumentActivity">
 
-    <!-- App Bar -->
+    <!-- AppBar -->
     <FrameLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:id="@+id/appBarBackground"
             android:layout_width="match_parent"
             android:layout_height="68dp"
-            android:background="@drawable/appbar_document_bg" />
+            android:background="@drawable/appbar_audio_bg" />
 
         <ImageView
             android:id="@+id/iv_back"
@@ -26,7 +26,6 @@
             android:layout_height="24dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="22dp"
-            android:layout_marginBottom="22dp"
             android:src="@drawable/ic_back"
             android:contentDescription="Kembali" />
 
@@ -41,7 +40,7 @@
             android:textSize="32sp" />
     </FrameLayout>
 
-    <!-- Konten -->
+    <!-- Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -57,6 +56,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="32dp">
 
+            <!-- Title -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,6 +78,7 @@
                 android:textStyle="bold"
                 android:textColor="#878787" />
 
+            <!-- Dokumen -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,7 +88,6 @@
                 android:textColor="#878787"
                 android:fontFamily="@font/metropolis_font" />
 
-            <!-- Area Pilih Dokumen -->
             <LinearLayout
                 android:id="@+id/documentPicker"
                 android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/input_border"
+                android:background="@drawable/audio_border"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -124,6 +124,81 @@
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/metropolis_font" />
             </LinearLayout>
+
+            <!-- Warna dokumen -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:text="Warna dokumen:"
+                android:textSize="12sp"
+                android:textColor="#878787"
+                android:fontFamily="@font/metropolis_font" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupColors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_blue"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/rb_blue_bg"
+                    android:button="@null"
+                    android:fontFamily="@font/metropolis_font"
+                    android:text="Biru"
+                    android:textColor="@color/rb_text"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_purple"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/rb_purple_bg"
+                    android:button="@null"
+                    android:fontFamily="@font/metropolis_font"
+                    android:text="Ungu"
+                    android:gravity="center"
+                    android:textAlignment="center"
+
+                    android:textColor="@color/rb_text"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_pink"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/rb_pink_bg"
+                    android:button="@null"
+                    android:fontFamily="@font/metropolis_font"
+                    android:text="Pink"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/rb_text"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_orange"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/rb_orange_bg"
+                    android:button="@null"
+                    android:fontFamily="@font/metropolis_font"
+                    android:text="Oranye"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/rb_text"
+                    android:textSize="14sp" />
+            </RadioGroup>
 
             <!-- Tombol Simpan -->
             <androidx.appcompat.widget.AppCompatButton
