@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.*;
 
-import com.example.projectpamcoba1.adapter.DocumentAdapter;
+import com.example.projectpamcoba1.DocumentAdapter;
 import com.example.projectpamcoba1.DocumentNote;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -79,6 +79,7 @@ public class DocumentListActivity extends AppCompatActivity {
                         try {
                             DocumentNote note = snapshot.toObject(DocumentNote.class);
                             if (note != null) {
+                                note.setId(snapshot.getId());    // ← isi ID di sini
                                 documentList.add(note);
                             }
                         } catch (Exception e) {
@@ -88,7 +89,8 @@ public class DocumentListActivity extends AppCompatActivity {
                     filterDocuments(etSearch.getText().toString());
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Gagal memuat dokumen: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        Toast.makeText(this, "Gagal memuat dokumen: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
     }
 
     private void filterDocuments(String keyword) {

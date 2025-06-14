@@ -15,6 +15,7 @@ import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -126,7 +127,7 @@ public class AddDocumentActivity extends AppCompatActivity {
 
         MediaManager.get().upload(fileUri)
                 .unsigned("pam-project")
-                .option("resource_type", "auto") // biarkan Cloudinary tentukan
+                .option("resource_type", "raw")
                 .callback(new UploadCallback() {
                     @Override public void onStart(String requestId) {}
                     @Override public void onProgress(String requestId, long bytes, long totalBytes) {}
@@ -153,20 +154,26 @@ public class AddDocumentActivity extends AppCompatActivity {
         documentNote.put("title", title);
         documentNote.put("fileUrl", fileUrl);
         documentNote.put("color", color);
-        documentNote.put("timestamp", Timestamp.now()); // GANTI baris ini
+        documentNote.put("timestamp", Timestamp.now());
 
-
-        FirebaseFirestore.getInstance()
-                .collection("users")
+        firestore.collection("users")
                 .document(uid)
                 .collection("documents")
                 .add(documentNote)
-                .addOnSuccessListener(doc -> {
-                    Toast.makeText(this, "Dokumen berhasil disimpan", Toast.LENGTH_SHORT).show();
+                .addOnSuccessListener((DocumentReference docRef) -> {
+                    // tulis juga ID dokumen ke dalam field "id"
+                    docRef.update("id", docRef.getId());
+                    Toast.makeText(
+                            this,
+                            "Dokumen berhasil disimpan",
+                            Toast.LENGTH_SHORT
+                    ).show();
                     finish();
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Gagal simpan dokumen: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
+                .addOnFailureListener(e -> Toast.makeText(
+                        this,
+                        "Gagal simpan dokumen: " + e.getMessage(),
+                        Toast.LENGTH_SHORT
+                ).show());
     }
 }
