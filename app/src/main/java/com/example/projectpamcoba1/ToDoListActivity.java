@@ -22,34 +22,15 @@ public class ToDoListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ToDoAdapter adapter;
     private List<ToDoItem> todoList;
+    private List<String> noteIdList; // Menyimpan noteId untuk tiap item
     private FirebaseFirestore db;
     private FirebaseUser user;
 
     private final ActivityResultLauncher<Intent> addTodoLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    String title = result.getData().getStringExtra("title");
-                    boolean isDone = result.getData().getBooleanExtra("isDone", false);
-
-                    String currentDate = getCurrentFormattedDate();
-                    ToDoItem newItem = new ToDoItem(title, currentDate, isDone);
-
-                    // Tambah ke list lokal dan refresh adapter
-                    todoList.add(newItem);
-                    adapter.notifyItemInserted(todoList.size() - 1);
-
-                    // Simpan ke Firestore: /users/{uid}/notes
-                    Map<String, Object> todoMap = new HashMap<>();
-                    todoMap.put("title", title);
-                    todoMap.put("date", currentDate);
-                    todoMap.put("isDone", isDone);
-
-                    if (user != null) {
-                        db.collection("users")
-                                .document(user.getUid())
-                                .collection("notes")
-                                .add(todoMap);
-                    }
+                // Refresh list dari Firestore setelah kembali dari AddEditActivity
+                if (result.getResultCode() == RESULT_OK || result.getResultCode() == RESULT_CANCELED) {
+                    fetchTodos();
                 }
             });
 
@@ -62,36 +43,55 @@ public class ToDoListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         todoList = new ArrayList<>();
-        adapter = new ToDoAdapter(todoList, this);
+        noteIdList = new ArrayList<>();
+        adapter = new ToDoAdapter(todoList, this, position -> {
+            // Saat item diklik, buka AddEditActivity untuk EDIT
+            ToDoItem item = todoList.get(position);
+            String noteId = noteIdList.get(position);
+
+            Intent intent = new Intent(ToDoListActivity.this, AddEditActivity.class);
+            intent.putExtra("title", item.getTitle());
+            intent.putExtra("noteId", noteId); // ← penting!
+            addTodoLauncher.launch(intent);
+        });
+
         recyclerView.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        // Ambil data dari Firestore: /users/{uid}/notes
+        fetchTodos(); // Ambil data awal
+
+        FloatingActionButton fab = findViewById(R.id.btn_add_todo);
+        fab.setOnClickListener(v -> {
+            // Tambah data baru
+            Intent intent = new Intent(ToDoListActivity.this, AddEditActivity.class);
+            addTodoLauncher.launch(intent);
+        });
+    }
+
+    private void fetchTodos() {
         if (user != null) {
             db.collection("users")
                     .document(user.getUid())
                     .collection("notes")
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
-                        todoList.clear(); // clear list lama dulu
+                        todoList.clear();
+                        noteIdList.clear();
+
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             String title = doc.getString("title");
                             String date = doc.getString("date");
                             boolean isDone = Boolean.TRUE.equals(doc.getBoolean("isDone"));
 
                             todoList.add(new ToDoItem(title, date, isDone));
+                            noteIdList.add(doc.getId()); // Simpan ID dokumen
                         }
+
                         adapter.notifyDataSetChanged();
                     });
         }
-
-        FloatingActionButton fab = findViewById(R.id.btn_add_todo);
-        fab.setOnClickListener(v -> {
-            Intent intent = new Intent(ToDoListActivity.this, AddEditActivity.class);
-            addTodoLauncher.launch(intent);
-        });
     }
 
     private String getCurrentFormattedDate() {

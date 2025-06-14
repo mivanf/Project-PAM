@@ -28,6 +28,7 @@ public class AddEditActivity extends AppCompatActivity {
     private LinearLayout filePicker;
     private Uri selectedFileUri;
     private FirebaseFirestore db;
+    private String noteId;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -50,7 +51,10 @@ public class AddEditActivity extends AppCompatActivity {
         btnSimpan.setOnClickListener(v -> showSaveDialog());
         btnHapus.setOnClickListener(v -> showDeleteDialog());
 
+        // Ambil data dari intent
         String titleFromIntent = getIntent().getStringExtra("title");
+        noteId = getIntent().getStringExtra("noteId");
+
         if (titleFromIntent != null) {
             editTitle.setText(titleFromIntent);
         }
@@ -102,18 +106,36 @@ public class AddEditActivity extends AppCompatActivity {
 
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            db.collection("users")
-                    .document(uid)
-                    .collection("notes")
-                    .add(todoMap)
-                    .addOnSuccessListener(docRef -> {
-                        Toast.makeText(this, "To-Do berhasil disimpan", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Gagal simpan ke Firestore: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
+            if (noteId != null && !noteId.isEmpty()) {
+                // Update dokumen
+                db.collection("users")
+                        .document(uid)
+                        .collection("notes")
+                        .document(noteId)
+                        .set(todoMap)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(this, "Catatan berhasil diperbarui", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Gagal memperbarui: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+            } else {
+                // Tambah dokumen baru
+                db.collection("users")
+                        .document(uid)
+                        .collection("notes")
+                        .add(todoMap)
+                        .addOnSuccessListener(docRef -> {
+                            Toast.makeText(this, "Catatan berhasil ditambahkan", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Gagal menambahkan: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+            }
         });
 
         btnDialogBatal.setOnClickListener(v -> dialog.dismiss());
@@ -130,12 +152,29 @@ public class AddEditActivity extends AppCompatActivity {
         Button btnBatal = view.findViewById(R.id.btnBatal);
 
         btnHapus.setOnClickListener(v -> {
-            String title = editTitle.getText().toString();
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("deletedTitle", title);
-            setResult(RESULT_OK, resultIntent);
-            dialog.dismiss();
-            finish();
+            if (noteId == null || noteId.isEmpty()) {
+                Toast.makeText(this, "Gagal menghapus: ID tidak tersedia", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            db.collection("users")
+                    .document(uid)
+                    .collection("notes")
+                    .document(noteId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "Catatan berhasil dihapus", Toast.LENGTH_SHORT).show();
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("noteId", noteId);
+                        setResult(RESULT_CANCELED, resultIntent);
+                        dialog.dismiss();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Gagal menghapus: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
         });
 
         btnBatal.setOnClickListener(v -> dialog.dismiss());
@@ -151,7 +190,7 @@ public class AddEditActivity extends AppCompatActivity {
                 }
             }
         }
-        if (result == null) {
+        if (result == null && uri != null) {
             result = uri.getLastPathSegment();
         }
         return result;

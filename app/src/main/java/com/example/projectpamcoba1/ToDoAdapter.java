@@ -1,26 +1,31 @@
 package com.example.projectpamcoba1;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.projectpamcoba1.AddEditActivity;
 import com.example.projectpamcoba1.data.model.ToDoItem;
+
 import java.util.List;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
     private List<ToDoItem> todoList;
     private Context context;
+    private OnItemClickListener listener;
 
-    public ToDoAdapter(List<ToDoItem> todoList, Context context) {
-        this.todoList = todoList;
-        this.context = context;
+    // Tambahkan interface listener
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
-    // Tambahkan method ini agar data bisa diperbarui
+    // Constructor baru menerima listener
+    public ToDoAdapter(List<ToDoItem> todoList, Context context, OnItemClickListener listener) {
+        this.todoList = todoList;
+        this.context = context;
+        this.listener = listener;
+    }
+
     public void setItems(List<ToDoItem> newList) {
         this.todoList = newList;
         notifyDataSetChanged();
@@ -56,10 +61,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             item.setChecked(isChecked);
         });
 
+        // Gunakan listener untuk klik item
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AddEditActivity.class);
-            intent.putExtra("title", item.getTitle());
-            context.startActivity(intent);
+            if (listener != null) {
+                listener.onItemClick(holder.getAdapterPosition());
+            }
         });
     }
 
