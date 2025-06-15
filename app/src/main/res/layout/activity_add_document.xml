@@ -18,7 +18,7 @@
             android:id="@+id/appBarBackground"
             android:layout_width="match_parent"
             android:layout_height="68dp"
-            android:background="@drawable/appbar_audio_bg" />
+            android:background="@drawable/appbar_document_bg" />
 
         <ImageView
             android:id="@+id/iv_back"
@@ -206,7 +206,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/button_rounded_purple"
+                android:background="@drawable/button_rounded_pink"
                 android:text="Simpan"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
