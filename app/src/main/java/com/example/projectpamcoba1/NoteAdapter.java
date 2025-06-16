@@ -40,8 +40,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.title.setText(note.getTitle());
         holder.date.setText(note.getDate());
 
+        // Penanganan null pada warna
+        String color = note.getColor();
+        if (color == null) color = "biru";
+
         // Set warna background sesuai color
-        switch (note.getColor()) {
+        switch (color) {
             case "oranye":
                 holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.warna_oranye));
                 break;
@@ -58,16 +62,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         }
 
         // Menampilkan gambar cover menggunakan Glide dari URL Cloudinary
-        String imageUrl = note.getImagePath(); // imagePath berisi URL Cloudinary
+        String imageUrl = note.getImagePath();
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(context)
                     .load(imageUrl)
-                    .placeholder(getDefaultImageByColor(note.getColor())) // placeholder saat loading
-                    .error(getDefaultImageByColor(note.getColor()))       // fallback jika gagal load
+                    .placeholder(getDefaultImageByColor(color))
+                    .error(getDefaultImageByColor(color))
                     .into(holder.cover);
         } else {
-            // Jika kosong, pakai gambar default berdasarkan warna
-            holder.cover.setImageResource(getDefaultImageByColor(note.getColor()));
+            holder.cover.setImageResource(getDefaultImageByColor(color));
         }
 
         // Klik item untuk buka detail
@@ -80,6 +83,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     private int getDefaultImageByColor(String color) {
+        if (color == null) color = "biru";
         switch (color) {
             case "oranye":
                 return R.drawable.ic_default_orange;
