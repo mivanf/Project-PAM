@@ -110,7 +110,7 @@ public class AddEditActivity extends AppCompatActivity {
                 // Update dokumen
                 db.collection("users")
                         .document(uid)
-                        .collection("notes")
+                        .collection("todos")
                         .document(noteId)
                         .set(todoMap)
                         .addOnSuccessListener(aVoid -> {
@@ -125,7 +125,7 @@ public class AddEditActivity extends AppCompatActivity {
                 // Tambah dokumen baru
                 db.collection("users")
                         .document(uid)
-                        .collection("notes")
+                        .collection("todos")
                         .add(todoMap)
                         .addOnSuccessListener(docRef -> {
                             Toast.makeText(this, "Catatan berhasil ditambahkan", Toast.LENGTH_SHORT).show();
@@ -161,7 +161,7 @@ public class AddEditActivity extends AppCompatActivity {
 
             db.collection("users")
                     .document(uid)
-                    .collection("notes")
+                    .collection("todos")
                     .document(noteId)
                     .delete()
                     .addOnSuccessListener(aVoid -> {

@@ -21,16 +21,27 @@
             android:layout_height="68dp"
             android:background="@drawable/header_todo" />
 
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/arrow_back"
+            android:backgroundTint="@color/white"
+            tools:ignore="ContentDescription" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="To-Do List"
-            android:textColor="@android:color/white"
+            android:text="Detail To Do List"
+            android:textColor="@color/white"
             android:textSize="32sp"
             android:textAlignment="center"
             android:fontFamily="@font/jersey10_regular"
             tools:ignore="HardcodedText" />
+
     </FrameLayout>
 
     <!-- SUBTITLE -->

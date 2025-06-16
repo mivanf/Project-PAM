@@ -73,7 +73,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             FirebaseFirestore.getInstance()
                     .collection("users")
                     .document(uid)
-                    .collection("notes")
+                    .collection("todos")
                     .document(noteId)
                     .update("isDone", isChecked)
                     .addOnFailureListener(e -> Toast.makeText(context, "Gagal update checkbox: " + e.getMessage(), Toast.LENGTH_SHORT).show());

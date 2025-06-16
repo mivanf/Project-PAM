@@ -2,6 +2,8 @@ package com.example.projectpamcoba1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +40,7 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
+        ImageButton backButton = findViewById(R.id.backButton);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -60,6 +63,8 @@ public class ToDoListActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        backButton.setOnClickListener(v -> finish());
+
         fetchTodos(); // Ambil data awal
 
         FloatingActionButton fab = findViewById(R.id.btn_add_todo);
@@ -73,7 +78,7 @@ public class ToDoListActivity extends AppCompatActivity {
         if (user != null) {
             db.collection("users")
                     .document(user.getUid())
-                    .collection("notes")
+                    .collection("todos")
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         todoList.clear();
