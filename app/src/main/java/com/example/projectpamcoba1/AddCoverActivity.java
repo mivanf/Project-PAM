@@ -39,15 +39,14 @@ public class AddCoverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cover);
 
-        // Inisialisasi view
+        db = FirebaseFirestore.getInstance();
         ivBack = findViewById(R.id.iv_back);
         imagePreview = findViewById(R.id.iv_cover);
         tvJudul = findViewById(R.id.et_judul_note);
-        db = FirebaseFirestore.getInstance();
 
         initCloudinary();
 
-        // Ambil data dari intent sebelumnya
+        // Menerima data dari intent sebelumnya
         selectedColor = getIntent().getStringExtra("color");
         title = getIntent().getStringExtra("title");
         content = getIntent().getStringExtra("content");
@@ -58,10 +57,13 @@ public class AddCoverActivity extends AppCompatActivity {
 
         // Tombol simpan
         findViewById(R.id.btn_simpan).setOnClickListener(v -> {
+            // Jika gambar sudah diupload ke Cloudinary dan url tersedia
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 saveNoteToFirestore();
+            // Jika gambar belum diupload ke Cloudinary
             } else if (selectedImageUri != null) {
                 uploadImageToCloudinary(selectedImageUri);
+            // Tidak ada gambar yang dipilih
             } else {
                 imageUrl = "default_" + selectedColor;
                 saveNoteToFirestore();
@@ -90,19 +92,21 @@ public class AddCoverActivity extends AppCompatActivity {
         }
     }
 
+    // Membuka galeri
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Pilih Gambar"), PICK_IMAGE_REQUEST);
     }
 
+    // Mengambil gambar dari galeri
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
-            Glide.with(this).load(selectedImageUri).into(imagePreview);
+            selectedImageUri = data.getData(); // Menyimpan URI gambar yang dipilih
+            imagePreview.setImageURI(selectedImageUri); // Menampilkan gambar sementara
         }
     }
 
@@ -122,7 +126,7 @@ public class AddCoverActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
-                        imageUrl = (String) resultData.get("secure_url");
+                        imageUrl = (String) resultData.get("secure_url"); // Menyimpan url gambar yang diunggah
                         Toast.makeText(AddCoverActivity.this, "Gambar berhasil diunggah", Toast.LENGTH_SHORT).show();
                         saveNoteToFirestore();
                     }

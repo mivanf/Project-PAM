@@ -16,10 +16,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Cek apakah user sudah login
+        // Mendapatkan data user
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+        // Jika user belum login
         if (user == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // Set default fragment
+        // Set HomeFragment sebagai default fragment
         loadFragment(new HomeFragment());
 
         bottomNavigationView.setOnItemSelectedListener(item -> {

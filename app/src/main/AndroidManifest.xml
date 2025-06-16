@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -27,35 +27,34 @@
             android:exported="false" />
         <activity
             android:name=".DetailNoteActivity"
-            android:exported="false" />
+            android:exported="false" /> <!-- Detail Note Activity -->
         <activity
             android:name=".NotesActivity"
-            android:exported="false" /> <!-- Splash Activity sebagai Launcher -->
+            android:exported="false" /> <!-- Notes Activity -->
         <activity
             android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true"> <!-- Splash Activity sebagai Launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Login Activity -->
+        </activity>
         <activity
             android:name=".LoginActivity"
-            android:exported="false" /> <!-- Register Activity -->
+            android:exported="false" /> <!-- Login Activity -->
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" /> <!-- Main Activity -->
+            android:exported="false" /> <!-- Register Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true" /> <!-- Add Notes Activity -->
+            android:exported="true" /> <!-- Main Activity -->
         <activity
             android:name=".AddNoteActivity"
-            android:exported="false" /> <!-- Add Cover Activity -->
+            android:exported="false" /> <!-- Add Notes Activity -->
         <activity
             android:name=".AddCoverActivity"
-            android:exported="false" />
-
+            android:exported="false" /> <!-- Add Cover Activity -->
         <activity
             android:name=".ToDoListActivity"
             android:exported="false" />
@@ -70,5 +69,4 @@
             android:exported="false" />
 
     </application>
-
 </manifest>

@@ -22,7 +22,6 @@ public class AddNoteActivity extends AppCompatActivity {
     private EditText titleEditText, contentEditText;
     private TextView dateTextView, wordCountTextView;
     private String selectedColor = "biru"; // Default
-    //private String imagePath = "";
     private FirebaseFirestore db;
     private RadioGroup colorRadioGroup;
     private SimpleDateFormat dateFormat;
@@ -62,7 +61,7 @@ public class AddNoteActivity extends AppCompatActivity {
             public void afterTextChanged(android.text.Editable editable) {}
         });
 
-        // Warna dipilih
+        // Memilih warna notes
         colorRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

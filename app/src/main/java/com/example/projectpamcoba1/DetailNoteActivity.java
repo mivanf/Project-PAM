@@ -24,7 +24,10 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
@@ -55,7 +58,6 @@ public class DetailNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_note);
 
-        // Inisialisasi Firebase dan View
         db = FirebaseFirestore.getInstance();
 
         tvTitle = findViewById(R.id.tv_detail);
@@ -162,7 +164,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         if (!isCloudinaryInitialized) {
             try {
                 Map<String, String> config = new HashMap<>();
-                config.put("cloud_name", "dk7ayxsny"); // Ganti sesuai akunmu
+                config.put("cloud_name", "dk7ayxsny"); // Menggunakan cloud dk7ayxsny
                 MediaManager.init(this, config);
                 isCloudinaryInitialized = true;
             } catch (IllegalStateException e) {
@@ -177,8 +179,8 @@ public class DetailNoteActivity extends AppCompatActivity {
 
         try {
             MediaManager.get().upload(selectedImageUri)
-                    .unsigned("pam-project") // Ganti dengan upload preset kamu
-                    .option("public_id", "project-pam/cover_" + System.currentTimeMillis()) // Simpan ke folder
+                    .unsigned("pam-project") // Menggunakan preset pam-project
+                    .option("public_id", "project-pam/cover_" + System.currentTimeMillis()) // Menyimpan ke folder project-pam
                     .callback(new UploadCallback() {
                         @Override
                         public void onStart(String requestId) {}
@@ -224,7 +226,7 @@ public class DetailNoteActivity extends AppCompatActivity {
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(this, "Catatan berhasil disimpan", Toast.LENGTH_SHORT).show();
                     updateCoverAndColor(color, newImageUrl != null ? newImageUrl : note.getImagePath());
-                    selectedImageUri = null; // reset image uri setelah upload sukses
+                    selectedImageUri = null; // Reset image uri setelah upload sukses
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Gagal menyimpan catatan", Toast.LENGTH_SHORT).show());
     }
@@ -252,7 +254,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         if (selectedId == rbOrange.getId()) return "oranye";
         if (selectedId == rbPink.getId()) return "pink";
         if (selectedId == rbPurple.getId()) return "ungu";
-        return "biru"; // default
+        return "biru"; // Warna default
     }
 
     // Mengupdate cover dan warna
@@ -262,7 +264,6 @@ public class DetailNoteActivity extends AppCompatActivity {
 
         switch (color.toLowerCase()) {
             case "oranye":
-            case "orange":
                 colorRes = R.color.bg_card_orange;
                 defaultCoverRes = R.drawable.ic_default_orange;
                 rbOrange.setChecked(true);
@@ -273,7 +274,6 @@ public class DetailNoteActivity extends AppCompatActivity {
                 rbPink.setChecked(true);
                 break;
             case "ungu":
-            case "purple":
                 colorRes = R.color.bg_card_purple;
                 defaultCoverRes = R.drawable.ic_default_purple;
                 rbPurple.setChecked(true);
@@ -334,7 +334,7 @@ public class DetailNoteActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
+            selectedImageUri = data.getData(); // Menyimpan URI gambar yang dipilih
             ivCover.setImageURI(selectedImageUri); // Menampilkan gambar sementara
         }
     }
@@ -347,7 +347,8 @@ public class DetailNoteActivity extends AppCompatActivity {
 
         if (bitmap != null) {
             try {
-                String fileName = "cover_" + System.currentTimeMillis() + ".jpg";
+                String timeStamp = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss", Locale.getDefault()).format(new Date());
+                String fileName = "cover_" + timeStamp  + ".jpg";
                 File file = new File(getExternalFilesDir(null), fileName);
                 FileOutputStream out = new FileOutputStream(file);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
