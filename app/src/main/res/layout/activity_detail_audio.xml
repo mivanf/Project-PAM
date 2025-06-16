@@ -1,0 +1,275 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detail_audio_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/scrollContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- AppBar / Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:background="@drawable/appbar_audio_bg">
+
+                <!-- Tombol Kembali -->
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginBottom="22dp"
+                    android:layout_toStartOf="@+id/tv_detail"
+                    android:contentDescription="Kembali"
+                    android:src="@drawable/ic_back"/>
+
+                <!-- Judul Header -->
+                <TextView
+                    android:id="@+id/tv_detail"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Detail Audio"
+                    android:fontFamily="@font/jersey10_font"
+                    android:textColor="@android:color/white"
+                    android:textSize="32sp"/>
+            </RelativeLayout>
+
+            <!-- Label Input Judul -->
+            <TextView
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Judul:"
+                android:textSize="12sp"
+                android:textColor="#878787"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <!-- Input Judul -->
+            <EditText
+                android:id="@+id/et_judul"
+                android:layout_width="332dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="18dp"
+                android:paddingBottom="4dp"
+                android:hint="Judul Audio"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_font"
+                android:textColor="#878787"
+                android:background="@drawable/input_border_purple"/>
+
+
+            <!-- Label Cover -->
+            <TextView
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Audio:"
+                android:textSize="12sp"
+                android:textColor="#878787"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <!-- Input Cover -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_pilih_audio"
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp">
+
+                <!-- LinearLayout untuk menata ImageView dan TextView -->
+                <LinearLayout
+                    android:layout_width="332dp"
+                    android:layout_height="375dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:background="@drawable/input_border_purple">
+
+                    <!-- Letak Audio Upload -->
+                    <ImageView
+                        android:id="@+id/iv_cover"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="Pilih Cover"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/teenyicons_mp3_solid"/>
+
+                    <!-- Keterangan Tambahkan Audio -->
+                    <TextView
+                        android:id="@+id/tv_tambah_audio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Tambahkan Audio\nPilih Audio untuk disimpan"
+                        android:textColor="#888888"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/metropolis_font"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Tombol Download Audio -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_download_audio"
+                android:layout_width="332dp"
+                android:layout_height="40dp"
+                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="40dp"
+                android:background="@drawable/button_rounded_purple"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:text="Download Audio"
+                android:textAllCaps="false"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <!-- Label Pilihan Warna Notes -->
+            <TextView
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Warna Notes:"
+                android:textSize="12sp"
+                android:textColor="#878787"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <!-- Pilihan Warna Notes -->
+            <RadioGroup
+                android:id="@+id/radioGroupColors"
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="32dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <!-- RadioButton Biru -->
+                <RadioButton
+                    android:id="@+id/rb_blue"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="8dp"
+                    android:button="@null"
+                    android:background="@drawable/rb_blue_bg"
+                    android:drawablePadding="8dp"
+                    android:text="Biru"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textColor="@color/rb_text"
+                    android:fontFamily="@font/metropolis_font"/>
+
+                <!-- RadioButton Oranye -->
+                <RadioButton
+                    android:id="@+id/rb_orange"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:button="@null"
+                    android:background="@drawable/rb_orange_bg"
+                    android:drawablePadding="8dp"
+                    android:text="Oranye"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textColor="@color/rb_text"
+                    android:fontFamily="@font/metropolis_font"/>
+
+                <!-- RadioButton Pink -->
+                <RadioButton
+                    android:id="@+id/rb_pink"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:button="@null"
+                    android:background="@drawable/rb_pink_bg"
+                    android:drawablePadding="8dp"
+                    android:text="Pink"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textColor="@color/rb_text"
+                    android:fontFamily="@font/metropolis_font"/>
+
+                <!-- RadioButton Ungu -->
+                <RadioButton
+                    android:id="@+id/rb_purple"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="8dp"
+                    android:button="@null"
+                    android:background="@drawable/rb_purple_bg"
+                    android:drawablePadding="8dp"
+                    android:text="Ungu"
+                    android:fontFamily="@font/metropolis_font"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textColor="@color/rb_text"/>
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <!-- Tombol Edit -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:paddingHorizontal="16dp"
+                    android:drawableStart="@drawable/rectangle_729"
+                    android:drawableTint="@color/white"
+                    android:drawablePadding="8dp"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:background="@drawable/bg_edit"
+                    android:fontFamily="@font/metropolis_font"/>
+
+                <!-- Tombol Hapus -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_hapus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginBottom="40dp"
+                    android:paddingHorizontal="16dp"
+                    android:drawableStart="@drawable/baseline_delete_24"
+                    android:drawableTint="@color/white"
+                    android:drawablePadding="8dp"
+                    android:text="Hapus"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:background="@drawable/bg_delete"
+                    android:fontFamily="@font/metropolis_font"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

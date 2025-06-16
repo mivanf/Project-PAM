@@ -9,24 +9,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-//import android.net.Uri;
-//import android.os.Bundle;
-//
-//import com.bumptech.glide.Glide;
-//import com.cloudinary.Transformation;
-//import com.cloudinary.android.MediaManager;
-//import com.cloudinary.android.callback.ErrorInfo;
-//import com.cloudinary.android.callback.UploadCallback;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.util.Log;
-//
-//import com.cloudinary.cloudinaryquickstart.databinding.ActivityMainBinding;
-//
-//import java.util.HashMap;
-//import java.util.Map;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -55,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (itemId == R.id.navigation_home) {
                 fragment = new HomeFragment();
-//            } else if (itemId == R.id.navigation_add) {
-//                fragment = new AddFragment();
             } else if (itemId == R.id.navigation_profile) {
                 fragment = new ProfileFragment();
             }
@@ -65,11 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 loadFragment(fragment);
             }
 
-//            if (itemId == R.id.navigation_add) {
-//                startActivity(new Intent(MainActivity.this, AddNotesActivity.class));
-//                return true;
-//            }
-
             return true;
         });
     }
@@ -77,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         // Set kembali ke NotesFragment dan highlight ikon Notes setelah kembali dari AddActivity

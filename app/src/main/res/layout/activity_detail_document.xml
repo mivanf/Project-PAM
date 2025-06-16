@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detail_document_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- AppBar -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:background="@drawable/appbar_document_bg">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/ic_back"
+                    android:contentDescription="Kembali"/>
+
+                <TextView
+                    android:id="@+id/tv_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Detail Dokumen"
+                    android:textSize="32sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/jersey10_font"/>
+            </RelativeLayout>
+
+            <!-- Judul -->
+            <TextView
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Judul:"
+                android:textSize="12sp"
+                android:textColor="#878787"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="332dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:paddingStart="18dp"
+                android:hint="Judul Dokumen"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#878787"
+                android:background="@drawable/input_border_purple"
+                android:fontFamily="@font/poppins_font"/>
+
+            <!-- Dokumen terlampir -->
+            <TextView
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Dokumen terlampir:"
+                android:textSize="12sp"
+                android:textColor="#878787"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_document"
+                android:layout_width="332dp"
+                android:layout_height="375dp"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:background="@drawable/input_border_purple">
+
+                    <ImageView
+                        android:id="@+id/iv_doc_icon"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@drawable/ic_document"
+                        android:contentDescription="Ikon dokumen"
+                        android:scaleType="centerInside"/>
+
+                    <TextView
+                        android:id="@+id/tv_filename"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="nama_file.pdf"
+                        android:textSize="14sp"
+                        android:textColor="#888888"
+                        android:gravity="center"
+                        android:fontFamily="@font/metropolis_font"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!-- —— 卡片结束 —— -->
+
+            <!-- Tombol Unduh -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_open"
+                android:layout_width="332dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_rounded_pink"
+                android:text="Unduh Dokumen"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <!-- Warna Dokumen -->
+            <TextView
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Warna Dokumen:"
+                android:textSize="12sp"
+                android:textColor="#878787"
+                android:fontFamily="@font/metropolis_font"/>
+
+            <RadioGroup
+                android:id="@+id/rg_colors"
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <RadioButton
+                    android:id="@+id/rb_blue"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:button="@null"
+                    android:background="@drawable/rb_blue_bg"
+                    android:text="Biru"
+                    android:textSize="14sp"
+                    android:textColor="@color/rb_text"
+                    android:gravity="center"/>
+
+                <RadioButton
+                    android:id="@+id/rb_orange"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="8dp"
+                    android:button="@null"
+                    android:background="@drawable/rb_orange_bg"
+                    android:text="Oranye"
+                    android:textSize="14sp"
+                    android:textColor="@color/rb_text"
+                    android:gravity="center"/>
+
+                <RadioButton
+                    android:id="@+id/rb_pink"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="8dp"
+                    android:button="@null"
+                    android:background="@drawable/rb_pink_bg"
+                    android:text="Pink"
+                    android:textSize="14sp"
+                    android:textColor="@color/rb_text"
+                    android:gravity="center"/>
+
+                <RadioButton
+                    android:id="@+id/rb_purple"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="8dp"
+                    android:button="@null"
+                    android:background="@drawable/rb_purple_bg"
+                    android:text="Ungu"
+                    android:textSize="14sp"
+                    android:textColor="@color/rb_text"
+                    android:gravity="center"/>
+            </RadioGroup>
+
+            <!-- Tombol Update & Hapus -->
+            <LinearLayout
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="12dp"
+                    android:text="Update"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/bg_edit"
+                    android:fontFamily="@font/metropolis_font"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Hapus"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/bg_delete"
+                    android:fontFamily="@font/metropolis_font"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

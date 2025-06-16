@@ -49,6 +49,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("commons-io:commons-io:2.6")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -60,4 +62,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 }

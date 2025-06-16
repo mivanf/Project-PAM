@@ -2,7 +2,6 @@ package com.example.projectpamcoba1;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
@@ -36,10 +36,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = noteList.get(position);
+
         holder.title.setText(note.getTitle());
         holder.date.setText(note.getDate());
 
-        // Warna background berdasarkan nama warna
+        // Set warna background sesuai color
         switch (note.getColor()) {
             case "oranye":
                 holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.warna_oranye));
@@ -51,44 +52,33 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.warna_ungu));
                 break;
             case "biru":
-                holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.warna_biru));
-                break;
             default:
-                holder.container.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
+                holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.warna_biru));
                 break;
         }
 
-        // Menampilkan gambar
-        String imagePath = note.getImagePath();
-        if (imagePath != null && !imagePath.isEmpty()) {
-            // Jika cover default berdasarkan warna
-            if (imagePath.startsWith("default_")) {
-                holder.cover.setImageResource(getDefaultImageByColor(note.getColor()));
-            } else {
-                // Jika gambar cover yang diupload pengguna
-                File imgFile = new File(imagePath);
-                if (imgFile.exists()) {
-                    holder.cover.setImageDrawable(Drawable.createFromPath(imgFile.getAbsolutePath()));
-                } else {
-                    // Jika gagal ditemukan, gunakan default
-                    holder.cover.setImageResource(getDefaultImageByColor(note.getColor()));
-                }
-            }
+        // Menampilkan gambar cover menggunakan Glide dari URL Cloudinary
+        String imageUrl = note.getImagePath(); // imagePath berisi URL Cloudinary
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(imageUrl)
+                    .placeholder(getDefaultImageByColor(note.getColor())) // placeholder saat loading
+                    .error(getDefaultImageByColor(note.getColor()))       // fallback jika gagal load
+                    .into(holder.cover);
         } else {
-            // Jika cover kosong
+            // Jika kosong, pakai gambar default berdasarkan warna
             holder.cover.setImageResource(getDefaultImageByColor(note.getColor()));
         }
 
-        // Klik ke detail
+        // Klik item untuk buka detail
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailNoteActivity.class);
-            intent.putExtra("note", note); // note = objek Note
-            intent.putExtra("title", note.getTitle()); // Mengirim title ke DetailNoteActivity
+            intent.putExtra("note", note);
+            intent.putExtra("title", note.getTitle());
             context.startActivity(intent);
         });
     }
 
-    // Menentukan gambar default sesuai warna background
     private int getDefaultImageByColor(String color) {
         switch (color) {
             case "oranye":
@@ -98,7 +88,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             case "ungu":
                 return R.drawable.ic_default_purple;
             case "biru":
-                return R.drawable.ic_default_blue;
             default:
                 return R.drawable.ic_default_blue;
         }
