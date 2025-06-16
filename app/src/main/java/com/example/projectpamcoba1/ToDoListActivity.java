@@ -22,7 +22,7 @@ public class ToDoListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ToDoAdapter adapter;
     private List<ToDoItem> todoList;
-    private List<String> noteIdList; // Menyimpan noteId untuk tiap item
+    private List<String> noteIdList;
     private FirebaseFirestore db;
     private FirebaseUser user;
 
@@ -44,14 +44,14 @@ public class ToDoListActivity extends AppCompatActivity {
 
         todoList = new ArrayList<>();
         noteIdList = new ArrayList<>();
-        adapter = new ToDoAdapter(todoList, this, position -> {
-            // Saat item diklik, buka AddEditActivity untuk EDIT
+
+        adapter = new ToDoAdapter(todoList, noteIdList, this, position -> {
             ToDoItem item = todoList.get(position);
             String noteId = noteIdList.get(position);
 
             Intent intent = new Intent(ToDoListActivity.this, AddEditActivity.class);
             intent.putExtra("title", item.getTitle());
-            intent.putExtra("noteId", noteId); // ← penting!
+            intent.putExtra("noteId", noteId);
             addTodoLauncher.launch(intent);
         });
 
@@ -64,7 +64,6 @@ public class ToDoListActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.btn_add_todo);
         fab.setOnClickListener(v -> {
-            // Tambah data baru
             Intent intent = new Intent(ToDoListActivity.this, AddEditActivity.class);
             addTodoLauncher.launch(intent);
         });
@@ -86,10 +85,10 @@ public class ToDoListActivity extends AppCompatActivity {
                             boolean isDone = Boolean.TRUE.equals(doc.getBoolean("isDone"));
 
                             todoList.add(new ToDoItem(title, date, isDone));
-                            noteIdList.add(doc.getId()); // Simpan ID dokumen
+                            noteIdList.add(doc.getId());
                         }
 
-                        adapter.notifyDataSetChanged();
+                        adapter.setItems(todoList, noteIdList);
                     });
         }
     }
