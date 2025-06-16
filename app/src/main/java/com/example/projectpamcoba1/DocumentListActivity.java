@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Window;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.*;
 
 import com.example.projectpamcoba1.DocumentAdapter;
@@ -65,6 +67,10 @@ public class DocumentListActivity extends AppCompatActivity {
         });
 
         loadDocuments();
+
+        // Notifbar warna pink
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.card_pink));
     }
 
     private void loadDocuments() {

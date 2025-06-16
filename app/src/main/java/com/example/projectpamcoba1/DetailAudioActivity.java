@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
@@ -102,6 +104,10 @@ public class DetailAudioActivity extends AppCompatActivity {
                     .setNegativeButton("Batal", null)
                     .show();
         });
+
+        // Notifbar warna ungu
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.audio_bar));
     }
 
     // Method untuk menangani hasil dari pemilihan file audio

@@ -62,7 +62,7 @@ public class AudioActivity extends AppCompatActivity {
 
         // Mengubah warna status bar agar sesuai dengan tema aplikasi
         Window window = getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.notes_bar));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.audio_bar));
     }
 
     // Method untuk memuat daftar audio dari Firestore dan menampilkannya di RecyclerView

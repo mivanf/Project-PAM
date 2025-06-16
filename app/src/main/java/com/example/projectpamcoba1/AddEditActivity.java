@@ -7,12 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.view.View;
+import android.view.Window;
 import android.widget.*;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,6 +60,10 @@ public class AddEditActivity extends AppCompatActivity {
         if (titleFromIntent != null) {
             editTitle.setText(titleFromIntent);
         }
+
+        // Notifbar warna kuning
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.header_yellow));
     }
 
     private final ActivityResultLauncher<Intent> filePickerLauncher =

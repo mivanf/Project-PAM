@@ -2,11 +2,13 @@ package com.example.projectpamcoba1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ImageButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,6 +74,10 @@ public class ToDoListActivity extends AppCompatActivity {
             Intent intent = new Intent(ToDoListActivity.this, AddEditActivity.class);
             addTodoLauncher.launch(intent);
         });
+
+        // Notifbar warna kuning
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.header_yellow));
     }
 
     private void fetchTodos() {

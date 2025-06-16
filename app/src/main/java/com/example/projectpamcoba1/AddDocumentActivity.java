@@ -5,10 +5,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.view.Window;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
@@ -29,6 +31,7 @@ public class AddDocumentActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private LinearLayout documentPicker;
     private TextView nameFileText, fileInfoText;
+    private ImageView ivBack;
     private RadioGroup radioGroupColors;
     private Button saveButton;
     private Uri fileUri;
@@ -43,6 +46,7 @@ public class AddDocumentActivity extends AppCompatActivity {
 
         CloudinaryManager.init(this); // pastikan inisialisasi
 
+        ivBack      = findViewById(R.id.iv_back);
         editTextTitle = findViewById(R.id.editTextTitle);
         documentPicker = findViewById(R.id.documentPicker);
         nameFileText = findViewById(R.id.name_file);
@@ -50,6 +54,8 @@ public class AddDocumentActivity extends AppCompatActivity {
         radioGroupColors = findViewById(R.id.radioGroupColors);
         saveButton = findViewById(R.id.save_button);
         firestore = FirebaseFirestore.getInstance();
+
+        ivBack.setOnClickListener(v -> finish());
 
         // default warna radio button
         radioGroupColors.check(R.id.rb_blue);
@@ -81,6 +87,10 @@ public class AddDocumentActivity extends AppCompatActivity {
             else if (checkedId == R.id.rb_pink) selectedColor = "pink";
             else if (checkedId == R.id.rb_purple) selectedColor = "ungu";
         });
+
+        // Notifbar warna pink
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.card_pink));
     }
 
     private void openFilePicker() {

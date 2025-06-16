@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
@@ -88,6 +90,10 @@ public class AddAudioNoteActivity extends AppCompatActivity {
 
         // Tombol kembali ke halaman sebelumnya
         ivBack.setOnClickListener(v -> onBackPressed());
+
+        // Notifbar warna ungu
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.audio_bar));
     }
 
     // Method untuk memproses hasil pemilihan file audio dari galeri

@@ -5,10 +5,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.view.View;
+import android.view.Window;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
@@ -125,6 +128,10 @@ public class DocumentDetailActivity extends AppCompatActivity {
                         Toast.makeText(this, "Gagal hapus: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
+
+        // Notifbar warna pink
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.card_pink));
     }
 
     private String extractFileName(String url) {
