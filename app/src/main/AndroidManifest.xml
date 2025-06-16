@@ -57,22 +57,16 @@
             android:exported="false" />
 
         <activity
-            android:name=".data.ToDoListActivity"
+            android:name=".ToDoListActivity"
+            android:exported="false" />
+        <activity android:name=".DocumentListActivity"
+            android:exported="false" />
+        <activity android:name=".DocumentDetailActivity"
+            android:exported="false" />
+        <activity android:name=".AddDocumentActivity"
             android:exported="false" />
         <activity
-            android:name=".data.AddEditActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".AddDocumentActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".DocumentListActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".DocumentDetailActivity"
+            android:name=".AddEditActivity"
             android:exported="false" />
 
     </application>
