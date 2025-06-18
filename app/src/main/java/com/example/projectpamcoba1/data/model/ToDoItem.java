@@ -6,6 +6,10 @@ public class ToDoItem {
     private String date;
     private boolean isChecked;
 
+    // Diperlukan oleh Firestore saat deserialisasi
+    public ToDoItem() {
+    }
+
     public ToDoItem(String title, String date, boolean isChecked) {
         this.title = title;
         this.date = date;
@@ -19,8 +23,15 @@ public class ToDoItem {
     public void setDate(String date) { this.date = date; }
 
     public boolean isChecked() { return isChecked; }
-    public void setChecked(boolean checked) { isChecked = checked; }
+    public void setChecked(boolean checked) { this.isChecked = checked; }
 
+    // Untuk mapping field 'isDone' dari Firestore ke 'isChecked'
     public void setDone(boolean isDone) {
+
+        this.isChecked = isDone;
+    }
+
+    public boolean getDone() {
+        return isChecked;
     }
 }

@@ -49,7 +49,7 @@ public class ToDoListActivity extends AppCompatActivity {
             ToDoItem item = todoList.get(position);
             String noteId = noteIdList.get(position);
 
-            Intent intent = new Intent(ToDoListActivity.this, AddEditActivity.class);
+            Intent intent = new Intent(ToDoListActivity.this, DetailToDo.class);
             intent.putExtra("title", item.getTitle());
             intent.putExtra("noteId", noteId);
             addTodoLauncher.launch(intent);
@@ -73,7 +73,7 @@ public class ToDoListActivity extends AppCompatActivity {
         if (user != null) {
             db.collection("users")
                     .document(user.getUid())
-                    .collection("notes")
+                    .collection("todos")
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         todoList.clear();

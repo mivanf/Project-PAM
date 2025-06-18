@@ -14,6 +14,7 @@ public class CloudinaryManager {
             Map<String, String> config = new HashMap<>();
             config.put("cloud_name", "dk7ayxsny"); // ganti sesuai akun kamu
 
+
             MediaManager.init(context, config);
             isInitialized = true;
         }
