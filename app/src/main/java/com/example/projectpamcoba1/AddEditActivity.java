@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -17,14 +19,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class AddEditActivity extends AppCompatActivity {
 
     private EditText editTitle;
     private TextView nameFile;
-    private Button btnSimpan, btnHapus;
+    private Button btnSimpan, btnHapus, btnDownload;
     private LinearLayout filePicker;
     private Uri selectedFileUri;
     private FirebaseFirestore db;
@@ -41,22 +52,48 @@ public class AddEditActivity extends AppCompatActivity {
         btnSimpan = findViewById(R.id.btnSimpan);
         btnHapus = findViewById(R.id.btnHapus);
         filePicker = findViewById(R.id.audioPicker);
+        btnDownload = findViewById(R.id.btnDownloadFile);
         ImageButton backButton = findViewById(R.id.backButton);
 
         db = FirebaseFirestore.getInstance();
 
         backButton.setOnClickListener(v -> finish());
         filePicker.setOnClickListener(v -> pilihFile());
-
         btnSimpan.setOnClickListener(v -> showSaveDialog());
         btnHapus.setOnClickListener(v -> showDeleteDialog());
+
+        // Sembunyikan tombol download default
+        btnDownload.setVisibility(View.GONE);
 
         // Ambil data dari intent
         String titleFromIntent = getIntent().getStringExtra("title");
         noteId = getIntent().getStringExtra("noteId");
+        String fileUriFromIntent = getIntent().getStringExtra("fileUri");
+
+        Log.d("AddEditActivity", "fileUriFromIntent = " + fileUriFromIntent);
 
         if (titleFromIntent != null) {
             editTitle.setText(titleFromIntent);
+        }
+
+        if (fileUriFromIntent != null && !fileUriFromIntent.isEmpty()) {
+            Uri fileUri = Uri.parse(fileUriFromIntent);
+            String fileName = getFileName(fileUri);
+            if (fileName == null) {
+                fileName = "downloaded_file_" + System.currentTimeMillis();
+            }
+
+            nameFile.setText(fileName);
+            btnDownload.setVisibility(View.VISIBLE);
+
+            String finalFileName = fileName;
+            btnDownload.setOnClickListener(v -> {
+                if (fileUri.getScheme() != null && fileUri.getScheme().startsWith("http")) {
+                    downloadFile(fileUriFromIntent, finalFileName);
+                } else {
+                    Toast.makeText(this, "File ini tersimpan di perangkat", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -65,7 +102,7 @@ public class AddEditActivity extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     selectedFileUri = result.getData().getData();
                     String fileName = getFileName(selectedFileUri);
-                    nameFile.setText(fileName);
+                    nameFile.setText(fileName != null ? fileName : "nama_file_tidak_dikenal");
                 }
             });
 
@@ -107,10 +144,9 @@ public class AddEditActivity extends AppCompatActivity {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             if (noteId != null && !noteId.isEmpty()) {
-                // Update dokumen
                 db.collection("users")
                         .document(uid)
-                        .collection("notes")
+                        .collection("todos")
                         .document(noteId)
                         .set(todoMap)
                         .addOnSuccessListener(aVoid -> {
@@ -122,10 +158,9 @@ public class AddEditActivity extends AppCompatActivity {
                             Toast.makeText(this, "Gagal memperbarui: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         });
             } else {
-                // Tambah dokumen baru
                 db.collection("users")
                         .document(uid)
-                        .collection("notes")
+                        .collection("todos")
                         .add(todoMap)
                         .addOnSuccessListener(docRef -> {
                             Toast.makeText(this, "Catatan berhasil ditambahkan", Toast.LENGTH_SHORT).show();
@@ -161,7 +196,7 @@ public class AddEditActivity extends AppCompatActivity {
 
             db.collection("users")
                     .document(uid)
-                    .collection("notes")
+                    .collection("todos")
                     .document(noteId)
                     .delete()
                     .addOnSuccessListener(aVoid -> {
@@ -198,5 +233,37 @@ public class AddEditActivity extends AppCompatActivity {
 
     private String getCurrentFormattedDate() {
         return new SimpleDateFormat("dd MMMM yyyy HH:mm", new Locale("id", "ID")).format(new Date());
+    }
+
+    private void downloadFile(String fileUrl, String fileName) {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder().url(fileUrl).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DownloadError", "Download failed", e);
+                runOnUiThread(() ->
+                        Toast.makeText(AddEditActivity.this, "Gagal mengunduh file", Toast.LENGTH_SHORT).show()
+                );
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    File file = new File(downloadsDir, fileName);
+
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(response.body().bytes());
+                    fos.close();
+
+                    runOnUiThread(() ->
+                            Toast.makeText(AddEditActivity.this, "File berhasil diunduh ke folder Download", Toast.LENGTH_LONG).show()
+                    );
+                }
+            }
+        });
     }
 }

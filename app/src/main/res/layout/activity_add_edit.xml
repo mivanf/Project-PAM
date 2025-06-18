@@ -133,25 +133,13 @@
 
 
             <!-- Status Tugas -->
-            <TextView
+            <Button
+                android:id="@+id/btnDownloadFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Status:"
-                android:textSize="12sp"
-                android:layout_marginTop="20dp" />
-
-            <CheckBox
-                android:id="@+id/cbSelesai"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Selesai" />
-
-            <CheckBox
-                android:id="@+id/cbBelum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Belum Selesai" />
-
+                android:fontFamily="@font/poppins_bold"
+                android:layout_marginTop="0dp"
+                android:text="Download File" />
 
             <!-- Tombol -->
             <Button
@@ -160,16 +148,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Simpan"
+                android:fontFamily="@font/poppins_bold"
                 android:backgroundTint="#D48B20"
                 android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnHapus"
-                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="0dp"
                 android:text="Hapus"
+                android:fontFamily="@font/poppins_bold"
                 android:textColor="#B00020"
                 android:backgroundTint="@android:color/transparent" />
 
