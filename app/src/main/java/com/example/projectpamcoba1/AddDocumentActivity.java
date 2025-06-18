@@ -1,23 +1,23 @@
 package com.example.projectpamcoba1;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.OpenableColumns;
-import android.view.Window;
+import android.util.Log;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -31,74 +31,77 @@ public class AddDocumentActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private LinearLayout documentPicker;
     private TextView nameFileText, fileInfoText;
-    private ImageView ivBack;
     private RadioGroup radioGroupColors;
     private Button saveButton;
     private Uri fileUri;
-
-    private String selectedColor = "biru"; // default
     private FirebaseFirestore firestore;
+    private String selectedColor = "biru";
+    private boolean isCloudinaryInitialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_document);
 
-        CloudinaryManager.init(this); // pastikan inisialisasi
+        // Inisialisasi Cloudinary via CloudinaryManager versi lama
+        CloudinaryManager.init(this);
+        // Fallback init lokal
+        initCloudinary();
 
-        ivBack      = findViewById(R.id.iv_back);
-        editTextTitle = findViewById(R.id.editTextTitle);
-        documentPicker = findViewById(R.id.documentPicker);
-        nameFileText = findViewById(R.id.name_file);
-        fileInfoText = findViewById(R.id.file_info);
+        editTextTitle    = findViewById(R.id.editTextTitle);
+        documentPicker   = findViewById(R.id.documentPicker);
+        nameFileText     = findViewById(R.id.name_file);
+        fileInfoText     = findViewById(R.id.file_info);
         radioGroupColors = findViewById(R.id.radioGroupColors);
-        saveButton = findViewById(R.id.save_button);
-        firestore = FirebaseFirestore.getInstance();
+        saveButton       = findViewById(R.id.save_button);
+        firestore        = FirebaseFirestore.getInstance();
 
-        ivBack.setOnClickListener(v -> finish());
-
-        // default warna radio button
         radioGroupColors.check(R.id.rb_blue);
 
-        // pilih file
         documentPicker.setOnClickListener(v -> openFilePicker());
-
-        // simpan tombol
         saveButton.setOnClickListener(v -> {
             String title = editTextTitle.getText().toString().trim();
-
             if (title.isEmpty()) {
-                Toast.makeText(this, "Judul harus diisi", Toast.LENGTH_SHORT).show();
+                editTextTitle.setError("Judul harus diisi");
                 return;
             }
-
             if (fileUri == null) {
                 Toast.makeText(this, "Pilih file terlebih dahulu", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             uploadToCloudinary(fileUri, title, getSelectedColor());
         });
 
-        // update warna
-        radioGroupColors.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.rb_blue) selectedColor = "biru";
-            else if (checkedId == R.id.rb_orange) selectedColor = "oranye";
-            else if (checkedId == R.id.rb_pink) selectedColor = "pink";
-            else if (checkedId == R.id.rb_purple) selectedColor = "ungu";
+        radioGroupColors.setOnCheckedChangeListener((g, id) -> {
+            if (id == R.id.rb_blue)      selectedColor = "biru";
+            else if (id == R.id.rb_orange) selectedColor = "oranye";
+            else if (id == R.id.rb_pink)   selectedColor = "pink";
+            else if (id == R.id.rb_purple) selectedColor = "ungu";
         });
+    }
 
-        // Notifbar warna pink
-        Window window = getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.card_pink));
+    private void initCloudinary() {
+        if (!isCloudinaryInitialized) {
+            try {
+                Map<String, String> config = new HashMap<>();
+                config.put("cloud_name", "dk7ayxsny");
+                MediaManager.init(this, config);
+                isCloudinaryInitialized = true;
+            } catch (IllegalStateException e) {
+                Log.e("Cloudinary", "MediaManager already initialized");
+            }
+        }
     }
 
     private void openFilePicker() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        String[] mimeTypes = {"application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        filePickerLauncher.launch(Intent.createChooser(intent, "Pilih dokumen"));
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType("*/*");
+        i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
+                "application/pdf",
+                "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        });
+        filePickerLauncher.launch(Intent.createChooser(i, "Pilih dokumen"));
     }
 
     private final ActivityResultLauncher<Intent> filePickerLauncher =
@@ -111,79 +114,82 @@ public class AddDocumentActivity extends AppCompatActivity {
             });
 
     private String getSelectedColor() {
-        return selectedColor;
+        int id = radioGroupColors.getCheckedRadioButtonId();
+        return ((RadioButton) findViewById(id)).getText().toString().toLowerCase();
     }
 
     private String getFileName(Uri uri) {
-        String result = null;
+        String res = null;
         if ("content".equals(uri.getScheme())) {
-            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                    if (index >= 0) result = cursor.getString(index);
+            try (Cursor c = getContentResolver().query(uri, null, null, null, null)) {
+                if (c != null && c.moveToFirst()) {
+                    int i = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (i >= 0) res = c.getString(i);
                 }
             }
         }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) result = result.substring(cut + 1);
+        if (res == null) {
+            String path = uri.getPath();
+            int cut = (path != null ? path.lastIndexOf('/') : -1);
+            res = (cut != -1 ? path.substring(cut + 1) : path);
         }
-        return result;
+        return res;
     }
 
     private void uploadToCloudinary(Uri fileUri, String title, String color) {
-        Toast.makeText(this, "Mengupload dokumen...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Mengupload dokumen…", Toast.LENGTH_SHORT).show();
+
+        String fileName = getFileName(fileUri).trim().replace(" ", "_");
+        String ts = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String publicId = ts + "_" + fileName;
 
         MediaManager.get().upload(fileUri)
                 .unsigned("pam-project")
                 .option("resource_type", "raw")
+                .option("public_id", publicId)
                 .callback(new UploadCallback() {
-                    @Override public void onStart(String requestId) {}
-                    @Override public void onProgress(String requestId, long bytes, long totalBytes) {}
+                    @Override public void onStart(String reqId) {}
+                    @Override public void onProgress(String reqId, long bytes, long total) {}
+                    @Override public void onReschedule(String reqId, ErrorInfo e) {}
 
                     @Override
-                    public void onSuccess(String requestId, Map resultData) {
-                        String fileUrl = (String) resultData.get("secure_url");
-                        saveToFirestore(title, fileUrl, color);
+                    public void onSuccess(String reqId, Map resultData) {
+                        // Simpan URL download ke Firestore saja; download ditangani di DocumentDetailActivity
+                        String secureUrl = (String) resultData.get("secure_url");
+                        String downloadUrl = secureUrl.replace("/upload/", "/upload/fl_attachment/");
+                        saveToFirestore(title, downloadUrl, color);
+                        Toast.makeText(AddDocumentActivity.this,
+                                        "Dokumen berhasil diupload", Toast.LENGTH_SHORT)
+                                .show();
+                        finish();
                     }
 
                     @Override
-                    public void onError(String requestId, ErrorInfo error) {
-                        Toast.makeText(AddDocumentActivity.this, "Upload gagal: " + error.getDescription(), Toast.LENGTH_LONG).show();
+                    public void onError(String reqId, ErrorInfo err) {
+                        Toast.makeText(AddDocumentActivity.this,
+                                        "Upload gagal: " + err.getDescription(), Toast.LENGTH_LONG)
+                                .show();
                     }
-
-                    @Override public void onReschedule(String requestId, ErrorInfo error) {}
-                }).dispatch();
+                })
+                .dispatch();
     }
+
 
     private void saveToFirestore(String title, String fileUrl, String color) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Map<String,Object> doc = new HashMap<>();
+        doc.put("title", title);
+        doc.put("fileUrl", fileUrl);
+        doc.put("color", color);
+        doc.put("timestamp", Timestamp.now());
 
-        Map<String, Object> documentNote = new HashMap<>();
-        documentNote.put("title", title);
-        documentNote.put("fileUrl", fileUrl);
-        documentNote.put("color", color);
-        documentNote.put("timestamp", Timestamp.now());
-
-        firestore.collection("users")
-                .document(uid)
-                .collection("documents")
-                .add(documentNote)
-                .addOnSuccessListener((DocumentReference docRef) -> {
-                    // tulis juga ID dokumen ke dalam field "id"
-                    docRef.update("id", docRef.getId());
-                    Toast.makeText(
-                            this,
-                            "Dokumen berhasil disimpan",
-                            Toast.LENGTH_SHORT
-                    ).show();
+        firestore.collection("users").document(uid).collection("documents")
+                .add(doc)
+                .addOnSuccessListener(ref -> {
+                    ref.update("id", ref.getId());
+                    Toast.makeText(this, "Dokumen berhasil disimpan", Toast.LENGTH_SHORT).show();
                     finish();
                 })
-                .addOnFailureListener(e -> Toast.makeText(
-                        this,
-                        "Gagal simpan dokumen: " + e.getMessage(),
-                        Toast.LENGTH_SHORT
-                ).show());
+                .addOnFailureListener(e -> Toast.makeText(this, "Gagal simpan: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
